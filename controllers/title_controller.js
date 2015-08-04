@@ -82,7 +82,7 @@ exports.add_title = function(req,res){
 					if(!titulo){
 							coincidencia=false;
 							console.log("El código generado NO existe")
-							model.Titulo.create({nombre:req.body.n_alumno, apellidos:req.body.a_alumno, dni:req.body.dni, telefono:req.body.telefono, curso:req.body.curso, horas:req.body.horas, codigo:aleatorio}).then(function(titulos){
+							model.Titulo.create({nombre:req.body.n_alumno, apellidos:req.body.a_alumno, dni:req.body.dni, telefono:req.body.telefono, curso:req.body.curso, horas:req.body.horas, codigo:aleatorio, inicio: req.body.inicio, fin:req.body.fin}).then(function(titulos){
 							
 							res.redirect('/titles');
 
