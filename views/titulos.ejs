@@ -6,7 +6,7 @@
 <table style="margin:0 auto">
 	<thead>
 		<tr>
-			<td>Nombre</td><td>Apellidos</td><td>DNI</td><td>Teléfono</td><td>Curso</td><td>Horas</td><td>Código</td>
+			<td>Nombre</td><td>Apellidos</td><td>DNI</td><td>Teléfono</td><td>Curso</td><td>Horas</td><td>Inicio</td><td>Fin</td><td>Código</td>
 		</tr>
 	</thead>
 
@@ -22,6 +22,8 @@
 		<td><%= titulos[i].curso %></td>
 		<td><%= titulos[i].horas %></td>
 		<td><%= titulos[i].codigo %></td>
+		<td><%= titulos[i].inicio %></td>
+		<td><%= titulos[i].fin %></td>
 		<td><a href="/titles/<%= titulos[i].id %>/render">Renderizar</a></td>
 		<td><a href="/titles/<%= titulos[i].id %>/edit">Editar</a></td>
 		<td><a href="/titles/<%= titulos[i].id %>/delete">Eliminar</a></td>
