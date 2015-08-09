@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressPartials = require('express-partials');
 var randomstring = require("randomstring");
+var session = require('express-session');
+var qrCode = require('qrcode-npm');
 
 var routes = require('./routes/index');
 
@@ -24,8 +26,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
-app.use(cookieParser());
+app.use(cookieParser('murciastudio'));
+app.use(session({secret: '<mysecret>', 
+                 saveUninitialized: true,
+                 resave: true}));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function(req,res,next){
+
+    if(!req.path.match(/\/login|\/logout/)){ req.session.redir= req.path}
+
+        res.locals.session = req.session;
+        next();
+});
 
 app.use('/', routes);
 

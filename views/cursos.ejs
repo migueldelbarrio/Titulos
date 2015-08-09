@@ -6,7 +6,7 @@
 <table style="margin:0 auto">
 	<thead>
 		<tr>
-			<td>Nombre</td><td>Temario</td>
+			<td>ID</id><td>Nombre</td><td>Temario</td>
 		</tr>
 	</thead>
 
@@ -15,6 +15,7 @@
 <% for(var i in cursos) { %>
 	<tr>
 
+		<td><%= cursos[i].id %></td>
 		<td><%= cursos[i].nombre %></td>
 		<td><%- cursos[i].temario %></td>
 		<td><a href="courses/<%- cursos[i].id %>/show">Ver</a></td>	

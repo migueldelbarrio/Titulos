@@ -2,6 +2,8 @@ var model = require('../models/models.js');
 
 var randomstring = require("randomstring");
 
+var qrCode = require('qrcode-npm');
+
 
 exports.load = function(req,res,next,titleId){
 	model.Titulo.findById(titleId).then(function(title){
@@ -64,6 +66,11 @@ exports.add_title = function(req,res){
 		var coincidencia=true;
 		var aleatorio= randomstring.generate(20);
 
+
+		var qr = qrCode.qrcode(4, 'M');
+		qr.addData(aleatorio);
+		qr.make();
+
 		if(!req.body.dni.match(/^\d{8}[a-zA-Z]$/)){
 			model.Curso.findAll().then(function(courses){
 
@@ -81,11 +88,12 @@ exports.add_title = function(req,res){
 			while(coincidencia){
 					if(!titulo){
 							coincidencia=false;
-							console.log("El código generado NO existe")
+							console.log("El código generado NO existe");
+							var qr_send=qr.createImgTag(4);
 							model.Titulo.create({nombre:req.body.n_alumno, apellidos:req.body.a_alumno, dni:req.body.dni, telefono:req.body.telefono, curso:req.body.curso, horas:req.body.horas, codigo:aleatorio, inicio: req.body.inicio, fin:req.body.fin}).then(function(titulos){
 							
-							res.redirect('/titles');
-
+							//res.redirect('/titles');
+							res.send(qr_send);
 					});
 					}else{console.log("El código generado ya existe"); coincidencia=true;}
 

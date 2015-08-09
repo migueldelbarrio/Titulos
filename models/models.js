@@ -10,9 +10,13 @@ var Titulo = sequelize.import(path.join(__dirname,'titulo'));
 
 var Curso = sequelize.import(path.join(__dirname,'curso'));
 
+var Usuario = sequelize.import(path.join(__dirname,'usuarios'));
+
 exports.Titulo = Titulo;
 
 exports.Curso = Curso;
+
+exports.Usuario = Usuario;
 
 sequelize.sync().then(function(){
 
@@ -28,6 +32,12 @@ sequelize.sync().then(function(){
 		if(count==0){
 		Curso.create({nombre:'Premiere', temario:'<h1>Temario de Premiere</h1>'}).
 		then(function(){console.log('DB Curso inicializada')});
+	}
+	});
+	Usuario.count().then(function(count){
+		if(count==0){
+		Usuario.create({nombre:'murciastudio', clave:'Andalucia01', perfil:'Administrador'}).
+		then(function(){console.log('DB Usuarios inicializada')});
 	}
 	});
 
