@@ -63,42 +63,47 @@ exports.create_dummy = function(req,res){
 
 exports.add_title = function(req,res){
 
-		var coincidencia=true;
-		var aleatorio= randomstring.generate(20);
+	
+						var aleatorio= randomstring.generate(20);
 
 
-		var qr = qrCode.qrcode(4, 'M');
-		qr.addData(aleatorio);
-		qr.make();
+						var qr = qrCode.qrcode(4, 'M');
+						qr.addData(aleatorio);
+						qr.make();
 
-		if(!req.body.dni.match(/^\d{8}[a-zA-Z]$/)){
-			model.Curso.findAll().then(function(courses){
+						if(!req.body.dni.match(/^\d{8}[a-zA-Z]$/)){
+							model.Curso.findAll().then(function(courses){
 
 
-				res.render('admin', {cursos:courses, error_title:"DNI Incorrecto"});
+								res.render('admin', {cursos:courses, error_title:"DNI Incorrecto"});
 
-			});
-			//res.send('<h1>DNI incorrecto</h1><a href="/admin">Volver</a>');
-			return;
+							});
+							//res.send('<h1>DNI incorrecto</h1><a href="/admin">Volver</a>');
+							return;
 
-		};
+						};
 
-		model.Titulo.findOne({ where: { codigo: aleatorio } }).then(function(titulo){
+			
+						
+						
+						model.Titulo.findOne({ where: { codigo: aleatorio } }).then(function(titulo){
+									
 
-			while(coincidencia){
-					if(!titulo){
-							coincidencia=false;
-							console.log("El código generado NO existe");
-							var qr_send=qr.createImgTag(4);
-							model.Titulo.create({nombre:req.body.n_alumno, apellidos:req.body.a_alumno, dni:req.body.dni, telefono:req.body.telefono, curso:req.body.curso, horas:req.body.horas, codigo:aleatorio, inicio: req.body.inicio, fin:req.body.fin}).then(function(titulos){
+									if(!titulo){
+										
+											console.log("El código generado NO existe");
+											var qr_send=qr.createImgTag(4);
+											model.Titulo.create({nombre:req.body.n_alumno, apellidos:req.body.a_alumno, dni:req.body.dni, telefono:req.body.telefono, curso:req.body.curso, horas:req.body.horas, codigo:aleatorio,qr:qr_send, inicio: req.body.inicio, fin:req.body.fin}).then(function(titulos){
+											
+											res.redirect('/titles');
+											
+									});
+									}else{console.log("El código generado ya existe");}
+
 							
-							//res.redirect('/titles');
-							res.send(qr_send);
-					});
-					}else{console.log("El código generado ya existe"); coincidencia=true;}
-
-			}
-		});
+						});
+			
+				
 
 
 

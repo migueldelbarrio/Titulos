@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes){
 		curso:DataTypes.STRING,
 		horas:DataTypes.INTEGER,
 		codigo:DataTypes.STRING,
+		qr:DataTypes.STRING,
 		inicio:DataTypes.STRING,
 		fin:DataTypes.STRING,
 

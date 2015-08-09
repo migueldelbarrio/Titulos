@@ -4,6 +4,10 @@ var Sequelize = require('sequelize');
 
 var randomstring = require("randomstring");
 
+var qrCode = require('qrcode-npm');
+
+
+
 var sequelize = new Sequelize(null, null,null,{ dialect:'sqlite',storage:'titulo.sqlite'});
 
 var Titulo = sequelize.import(path.join(__dirname,'titulo'));
