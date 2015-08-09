@@ -19,6 +19,24 @@ exports.load = function(req,res,next,titleId){
 
 }
 
+exports.verify = function(req,res){
+
+
+	model.Titulo.findOne({ where: { codigo: req.query.title_code } }).then(function(titulo){
+
+
+			if(titulo){ res.render('verified',{titulo:titulo})}
+				else{ res.render('index', {error_verify:1})}
+
+	});
+
+}
+
+
+
+
+
+
 
 exports.admin_panel = function(req, res) {
 
@@ -64,9 +82,14 @@ exports.create_dummy = function(req,res){
 exports.add_title = function(req,res){
 
 	
+						var req=req;
+						var res=res;
+						var iteracion=0;
+
+	(function loop(){
+						console.log('Iteracion: '+iteracion);
+						iteracion++;
 						var aleatorio= randomstring.generate(20);
-
-
 						var qr = qrCode.qrcode(4, 'M');
 						qr.addData(aleatorio);
 						qr.make();
@@ -87,7 +110,6 @@ exports.add_title = function(req,res){
 						
 						
 						model.Titulo.findOne({ where: { codigo: aleatorio } }).then(function(titulo){
-									
 
 									if(!titulo){
 										
@@ -98,14 +120,14 @@ exports.add_title = function(req,res){
 											res.redirect('/titles');
 											
 									});
-									}else{console.log("El código generado ya existe");}
+									}else{console.log("El código generado ya existe");loop();}
 
 							
 						});
 			
 				
 
-
+		})();
 
 }
 

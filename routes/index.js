@@ -15,6 +15,7 @@ router.param('titleId', titleController.load)
 router.param('courseId', courseController.load)
 
 
+router.get('/verify',titleController.verify);
 
 router.get('/login',sessionController.index);
 router.post('/login',sessionController.login);
