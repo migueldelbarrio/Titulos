@@ -9,7 +9,15 @@ exports.load = function(req,res,next,titleId){
 	model.Titulo.findById(titleId).then(function(title){
 
 			if(title){ req.title = title;
-						next();}
+
+					model.Curso.findOne({ where: { nombre: req.title.curso } }).then(function(curso){
+						req.curso=curso;
+						console.log(req.curso.nombre +'||'+req.curso.temario);
+						next();
+
+					});
+
+					}
 				else{ throw new Error('No existe titleId'+ titleId);}
 
 
@@ -24,9 +32,14 @@ exports.verify = function(req,res){
 
 	model.Titulo.findOne({ where: { codigo: req.query.title_code } }).then(function(titulo){
 
+		if (titulo){
+			model.Curso.findOne({ where: { nombre: titulo.curso } }).then(function(curso){
+						
+						res.render('verified',{titulo:titulo, curso:curso});
 
-			if(titulo){ res.render('verified',{titulo:titulo})}
-				else{ res.render('index', {error_verify:1})}
+			});
+
+		}else{ res.render('index', {error_verify:1})}
 
 	});
 
@@ -133,7 +146,7 @@ exports.add_title = function(req,res){
 
 exports.render = function(req,res){
 
-res.render('render',{titulo:req.title});
+res.render('render',{titulo:req.title, curso:req.curso});
 
 
 

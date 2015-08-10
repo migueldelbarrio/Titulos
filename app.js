@@ -9,11 +9,125 @@ var expressPartials = require('express-partials');
 var randomstring = require("randomstring");
 var session = require('express-session');
 var qrCode = require('qrcode-npm');
+var multer = require('multer');
+var JSFtp = require("jsftp");
+
+var fs = require('fs');
 
 var routes = require('./routes/index');
 
 
+var content;
+// First I want to read the file
+/*fs.readFileSync('./public/images/logo_MS.png', function read(err, data) {
+    if (err) {
+        throw err;
+    }
+    content = data;
+
+    // Invoke the next step here however you like
+    console.log(content);   // Put all of the code here (not the best solution)
+              // Or put the next step in a function and invoke it
+});*/
+
+
+
 var app = express();
+var Ftp = new JSFtp({
+  host: '91.146.101.137',
+  port: 21, // defaults to 21 
+  user: "titulos", // defaults to "anonymous" 
+  pass: "adsl8120" // defaults to "@anonymous" 
+});
+
+
+
+
+Ftp.raw.mkd("./new_dir2", function(err, data) {
+    if (err) return console.error(err);
+ 
+    console.log(data.text); // Show the FTP response text to the user 
+    console.log(data.code); // Show the FTP response code to the user 
+});
+
+
+
+
+
+ var local = __dirname+'/public/prueba.html';
+ console.log('LOCAL:'+local);
+ var remote ='joder.html';
+ fs.readFile(local, function(err, buffer) {
+     if(err) {
+         console.error(err);
+         
+     }
+     else {
+
+        console.log('loaded file');
+
+
+
+
+
+       Ftp.auth( 'titulos' , 'adsl8120' , function (err , auth_res){
+                                console.log('reconnecting....');
+                                if(err){
+                                    console.log('BAD!!!!!');
+                                }else{
+                                    console.log('OK!!!!');
+                                    Ftp.put(buffer, remote, function(err) {
+                                     if (err) {
+                                         console.error(err);
+                                          console.log(" -error uploaded successfuly");
+                                         
+                                     }
+                                     else {
+                                         console.log(" - uploaded successfuly");
+                                         
+                                     }
+                                 });
+
+                                    Ftp.raw.mkd("./new_dir2", function(err, data) {
+                                        if (err) return console.error(err);
+                                     
+                                        console.log(data.text); // Show the FTP response text to the user 
+                                        console.log(data.code); // Show the FTP response code to the user 
+                                    });
+                                }
+        });
+
+
+
+       /* Ftp.put(buffer, remote, function(err) {
+             if (err) {
+                 console.error(err);
+                  console.log(" -error uploaded successfuly");
+                 
+             }
+             else {
+                 console.log(" - uploaded successfuly");
+                 
+             }
+         }); */
+     }
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

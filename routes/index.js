@@ -1,4 +1,19 @@
 var express = require('express');
+var multer = require('multer');
+
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.jpg') //Appending .jpg
+  }
+})
+
+var upload = multer({ storage: storage });
+
+var cpUpload = upload.single('postImg');
 
 var router = express.Router();
 
@@ -13,6 +28,24 @@ router.get('/', function(req, res) {
 
 router.param('titleId', titleController.load)
 router.param('courseId', courseController.load)
+
+
+
+router.get('/upload', function(req,res){
+
+	res.render('upload');
+
+
+});
+router.post('/createpost', cpUpload, function(req,res){
+
+  console.log(req.file);
+  res.redirect('/');
+
+});
+
+
+
 
 
 router.get('/verify',titleController.verify);
